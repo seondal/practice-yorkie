@@ -53,7 +53,10 @@
                 if (e.type == 'remote-change') {
                     const saved = rangy.serializeSelection(editor, true);
                     editor.innerHTML = doc.getRoot().text;
-                    rangy.deserializeSelection(saved);
+                    try {
+                        rangy.deserializeSelection(saved);
+                    } catch {
+                    }
                 }
             })
         }
