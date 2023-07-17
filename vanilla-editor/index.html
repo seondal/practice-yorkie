@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice Yorkie</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Simple Editor</h1>
+        <div contenteditable id="editor">Edit Me</div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/yorkie-js-sdk/0.4.4/yorkie-js-sdk.min.js"
+        integrity="sha512-2h+50cp261ookHwCKvCpTpXdLN86ly6/qG3vHKvNdjO1IBHByJjWeu+EjYj6wIJpmRcL5OWKwkOG9dtWXnsFzQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        async function main() {
+            const client = new yorkie.Client('https://api.yorkie.dev', {
+                apiKey: 'ciqm9aabjhd3s76qn1kg',
+            });
+            await client.activate();
+
+            const doc = new yorkie.Document('editor');
+            await client.attach(doc);
+
+            const editor = document.getElementById('editor');
+
+            doc.update(root => {
+                if (root.text) {
+                    editor.innerHTML = root.text;
+                } else {
+                    root.text = 'Edit Me.'
+                }
+            })
+
+            editor.addEventListener('input', e => {
+                doc.update(root => {
+                    root.text = editor.innerHTML;
+                })
+            })
+        }
+        main();
+    </script>
+</body>
+
+</html>
