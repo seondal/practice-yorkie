@@ -40,6 +40,12 @@
                     root.text = editor.innerHTML;
                 })
             })
+
+            doc.subscribe(e => {
+                if (e.type == 'remote-change') {
+                    editor.innerHTML = doc.getRoot().text;
+                }
+            })
         }
         main();
     </script>
