@@ -15,12 +15,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/yorkie-js-sdk/0.4.4/yorkie-js-sdk.min.js"
         integrity="sha512-2h+50cp261ookHwCKvCpTpXdLN86ly6/qG3vHKvNdjO1IBHByJjWeu+EjYj6wIJpmRcL5OWKwkOG9dtWXnsFzQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.1/rangy-core.min.js"
+        integrity="sha512-ZCkgV0SdoJJvBjlkwMpNZFSQzDWtB2ftYwOJQqwQUaXjfVLeUrxIfPMCxSaxVCXfFL82ccmjn6TTbkXjL3w2pA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangy/1.3.1/rangy-serializer.min.js"
+        integrity="sha512-UiMH5iF3E7RbnDaoZjPN5b7Ndo+SlbN6VtJsnSCfn05kz5pjKvQTjkoW5I26DUVS5H27extTiwrSdrDBqdgobQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         async function main() {
             const client = new yorkie.Client('https://api.yorkie.dev', {
                 apiKey: 'ciqm9aabjhd3s76qn1kg',
             });
             await client.activate();
+
+            rangy.init();
 
             const doc = new yorkie.Document('editor');
             await client.attach(doc);
@@ -43,7 +51,9 @@
 
             doc.subscribe(e => {
                 if (e.type == 'remote-change') {
+                    const saved = rangy.serializeSelection(editor, true);
                     editor.innerHTML = doc.getRoot().text;
+                    rangy.deserializeSelection(saved);
                 }
             })
         }
